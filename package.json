@@ -1,0 +1,45 @@
+{
+  "name": "phylogeovis",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack serve --mode development --open",
+    "build": "webpack --mode production",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint src/**/*.js src/**/*.jsx"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.26.10",
+    "@babel/preset-env": "^7.26.9",
+    "@babel/preset-react": "^7.26.3",
+    "@react-leaflet/core": "^3.0.0",
+    "@tailwindcss/postcss": "^4.1.4",
+    "babel-loader": "^10.0.0",
+    "css-loader": "^7.1.2",
+    "d3": "^7.9.0",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.6.3",
+    "leaflet": "^1.9.4",
+    "papaparse": "^5.5.2",
+    "phylotree": "^2.1.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-leaflet": "^5.0.0",
+    "react-router-dom": "^7.5.2",
+    "recharts": "^2.15.3",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.99.7",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.21",
+    "postcss-loader": "^7.2.4",
+    "tailwindcss": "^3.3.0"
+  }
+}
