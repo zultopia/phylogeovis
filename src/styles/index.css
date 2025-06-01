@@ -1,18 +1,537 @@
+/* src/styles/index.css */
+/* Main styling file for PhyloGeoVis application */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles and CSS variables */
+:root {
+  --color-primary: #059669;
+  --color-secondary: #3B82F6;
+  --color-accent: #F59E0B;
+  --color-danger: #EF4444;
+  --color-warning: #F59E0B;
+  --color-success: #10B981;
+  --color-info: #3B82F6;
+  
+  /* Species-specific colors */
+  --color-pongo-abelii: #10B981;
+  --color-pongo-pygmaeus: #3B82F6;
+  --color-pongo-tapanuliensis: #F59E0B;
+  
+  /* Background gradients */
+  --gradient-primary: linear-gradient(135deg, #059669 0%, #047857 100%);
+  --gradient-secondary: linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%);
+}
+
+/* Base HTML elements */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  @apply font-sans antialiased;
+  @apply bg-gray-50 text-gray-900;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  @apply w-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 rounded;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500;
+}
+
+/* Loading animations */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+/* Utility classes for animations */
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Component-specific styles */
+
+/* Dashboard components */
+.dashboard-card {
+  @apply bg-white rounded-lg shadow-sm border border-gray-200 p-6;
+  transition: all 0.2s ease-in-out;
+}
+
+.dashboard-card:hover {
+  @apply shadow-md;
+  transform: translateY(-1px);
+}
+
+.metric-card {
+  @apply dashboard-card;
+  @apply flex flex-col items-center text-center;
+}
+
+.metric-value {
+  @apply text-3xl font-bold;
+}
+
+.metric-label {
+  @apply text-sm text-gray-600 mt-1;
+}
+
+/* Phylogenetic tree styles */
+.tree-container {
+  @apply relative overflow-hidden bg-white rounded-lg shadow;
+}
+
+.tree-node {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.tree-node:hover {
+  r: 8;
+  stroke-width: 3;
+}
+
+.tree-branch {
+  transition: all 0.2s ease-in-out;
+}
+
+.tree-branch:hover {
+  stroke-width: 3;
+  stroke: #059669;
+}
+
+.tree-label {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  user-select: none;
+}
+
+.bootstrap-value {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  fill: #6B7280;
+}
+
+.branch-length {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 9px;
+  fill: #9CA3AF;
+}
+
+/* Diversity analysis charts */
+.diversity-chart {
+  @apply dashboard-card;
+}
+
+.diversity-bar {
+  transition: width 0.3s ease-in-out;
+}
+
+.nucleotide-bar {
+  transition: width 0.5s ease-in-out;
+}
+
+/* Conservation priority styles */
+.priority-critical {
+  @apply bg-red-100 border-red-500 text-red-700;
+}
+
+.priority-high {
+  @apply bg-orange-100 border-orange-500 text-orange-700;
+}
+
+.priority-medium {
+  @apply bg-yellow-100 border-yellow-500 text-yellow-700;
+}
+
+.priority-low {
+  @apply bg-green-100 border-green-500 text-green-700;
+}
+
+.conservation-map {
+  @apply relative bg-gray-100 rounded-lg overflow-hidden;
+  min-height: 400px;
+}
+
+/* Data visualization elements */
+.chart-container {
+  @apply relative w-full h-64;
+}
+
+.chart-tooltip {
+  @apply absolute z-10 bg-gray-900 text-white text-xs rounded px-2 py-1;
+  @apply pointer-events-none opacity-0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.chart-tooltip.show {
+  @apply opacity-100;
+}
+
+/* Species-specific styling */
+.species-pongo-abelii {
+  color: var(--color-pongo-abelii);
+}
+
+.species-pongo-pygmaeus {
+  color: var(--color-pongo-pygmaeus);
+}
+
+.species-pongo-tapanuliensis {
+  color: var(--color-pongo-tapanuliensis);
+}
+
+.bg-species-pongo-abelii {
+  background-color: var(--color-pongo-abelii);
+}
+
+.bg-species-pongo-pygmaeus {
+  background-color: var(--color-pongo-pygmaeus);
+}
+
+.bg-species-pongo-tapanuliensis {
+  background-color: var(--color-pongo-tapanuliensis);
+}
+
+/* Navigation styles */
+.nav-link {
+  @apply relative px-1 pt-1 pb-4 text-sm font-medium transition-colors duration-200;
+}
+
+.nav-link.active {
+  @apply text-green-600;
+}
+
+.nav-link.active::after {
+  content: '';
+  @apply absolute bottom-0 left-0 right-0 h-0.5 bg-green-600;
+}
+
+.nav-link:not(.active) {
+  @apply text-gray-500 hover:text-gray-700;
+}
+
+/* Sidebar styles */
+.sidebar {
+  @apply fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg;
+  @apply transform transition-transform duration-300 ease-in-out;
+}
+
+.sidebar.open {
+  @apply translate-x-0;
+}
+
+.sidebar.closed {
+  @apply -translate-x-full;
+}
+
+.sidebar-item {
+  @apply w-full flex items-center px-3 py-2 text-sm font-medium rounded-md;
+  @apply transition-colors duration-150 ease-in-out;
+}
+
+.sidebar-item.active {
+  @apply bg-green-100 text-green-700;
+}
+
+.sidebar-item:not(.active) {
+  @apply text-gray-600 hover:bg-gray-50 hover:text-gray-900;
+}
+
+/* Form elements */
+.form-input {
+  @apply block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm;
+  @apply placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500;
+}
+
+.form-select {
+  @apply form-input pr-10 bg-white;
+}
+
+.form-checkbox {
+  @apply h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded;
+}
+
+.form-radio {
+  @apply h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300;
+}
+
+/* Button styles */
+.btn {
+  @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md;
+  @apply focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-150;
+}
+
+.btn-primary {
+  @apply btn bg-green-600 text-white hover:bg-green-700 focus:ring-green-500;
+}
+
+.btn-secondary {
+  @apply btn bg-gray-600 text-white hover:bg-gray-700 focus:ring-gray-500;
+}
+
+.btn-danger {
+  @apply btn bg-red-600 text-white hover:bg-red-700 focus:ring-red-500;
+}
+
+.btn-outline {
+  @apply btn bg-white text-gray-700 border-gray-300 hover:bg-gray-50 focus:ring-green-500;
+}
+
+/* Alert and notification styles */
+.alert {
+  @apply rounded-md p-4;
+}
+
+.alert-error {
+  @apply alert bg-red-50 border border-red-200 text-red-800;
+}
+
+.alert-warning {
+  @apply alert bg-yellow-50 border border-yellow-200 text-yellow-800;
+}
+
+.alert-success {
+  @apply alert bg-green-50 border border-green-200 text-green-800;
+}
+
+.alert-info {
+  @apply alert bg-blue-50 border border-blue-200 text-blue-800;
+}
+
+/* Table styles */
+.data-table {
+  @apply min-w-full divide-y divide-gray-200;
+}
+
+.data-table th {
+  @apply px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+}
+
+.data-table td {
+  @apply px-6 py-4 whitespace-nowrap text-sm text-gray-900;
+}
+
+.data-table tr:nth-child(even) {
+  @apply bg-gray-50;
+}
+
+.data-table tr:hover {
+  @apply bg-gray-100;
+}
+
+/* Badge styles */
+.badge {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+.badge-gray {
+  @apply badge bg-gray-100 text-gray-800;
+}
+
+.badge-red {
+  @apply badge bg-red-100 text-red-800;
+}
+
+.badge-yellow {
+  @apply badge bg-yellow-100 text-yellow-800;
+}
+
+.badge-green {
+  @apply badge bg-green-100 text-green-800;
+}
+
+.badge-blue {
+  @apply badge bg-blue-100 text-blue-800;
+}
+
+/* Progress bars */
+.progress-bar {
+  @apply w-full bg-gray-200 rounded-full;
+}
+
+.progress-fill {
+  @apply h-full rounded-full transition-all duration-300 ease-in-out;
+}
+
+/* Responsive design utilities */
+@media (max-width: 640px) {
+  .mobile-hidden {
+    @apply hidden;
   }
   
-  .container {
-    padding: 1rem;
+  .mobile-full {
+    @apply w-full;
+  }
+}
+
+@media (min-width: 1024px) {
+  .desktop-only {
+    @apply block;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
   }
   
-  .heading {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #2563eb;
+  .print-break {
+    page-break-before: always;
   }
   
-  .paragraph {
-    margin-top: 0.5rem;
+  body {
+    @apply text-black bg-white;
   }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .tree-branch,
+  .tree-node {
+    stroke: #000000 !important;
+  }
+  
+  .text-gray-600 {
+    @apply text-gray-900;
+  }
+  
+  .text-gray-500 {
+    @apply text-gray-800;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .animate-spin,
+  .animate-pulse,
+  .animate-fade-in,
+  .animate-slide-in {
+    animation: none !important;
+  }
+}
+
+/* Focus styles for accessibility */
+.focus-visible:focus {
+  @apply outline-none ring-2 ring-green-500 ring-offset-2;
+}
+
+/* Custom scrollbar for data tables */
+.table-container {
+  @apply overflow-x-auto;
+}
+
+.table-container::-webkit-scrollbar {
+  @apply h-2;
+}
+
+.table-container::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 rounded;
+}
+
+/* Bioinformatics-specific styles */
+.sequence-display {
+  @apply font-mono text-xs bg-gray-100 p-2 rounded border;
+  font-family: 'Courier New', 'Monaco', monospace;
+  letter-spacing: 1px;
+  line-height: 1.5;
+}
+
+.nucleotide-A { color: #ff6b6b; }
+.nucleotide-T { color: #4ecdc4; }
+.nucleotide-C { color: #45b7d1; }
+.nucleotide-G { color: #f9ca24; }
+
+.genetic-variation-high {
+  @apply bg-green-500;
+}
+
+.genetic-variation-medium {
+  @apply bg-yellow-500;
+}
+
+.genetic-variation-low {
+  @apply bg-red-500;
+}
+
+/* Map-specific styles */
+.map-marker {
+  @apply w-4 h-4 rounded-full border-2 border-white shadow-lg;
+  transition: all 0.2s ease-in-out;
+}
+
+.map-marker:hover {
+  @apply w-6 h-6;
+  transform: scale(1.2);
+}
+
+.map-popup {
+  @apply bg-white rounded-lg shadow-lg p-3 border;
+  @apply text-sm max-w-xs;
+}
+
+/* Conservation status colors */
+.status-critically-endangered {
+  @apply text-red-700 bg-red-100;
+}
+
+.status-endangered {
+  @apply text-orange-700 bg-orange-100;
+}
+
+.status-vulnerable {
+  @apply text-yellow-700 bg-yellow-100;
+}
+
+.status-near-threatened {
+  @apply text-blue-700 bg-blue-100;
+}
+
+.status-least-concern {
+  @apply text-green-700 bg-green-100;
+}
