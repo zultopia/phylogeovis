@@ -94,7 +94,7 @@ root.render(
 );
 
 // Register service worker for offline functionality (optional)
-if ('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/service-worker.js')
       .then((registration) => {
@@ -110,6 +110,6 @@ if ('serviceWorker' in navigator) {
 console.log('PhyloGeoVis application initialized successfully');
 console.log('Build info:', {
   timestamp: new Date().toISOString(),
-  environment: process.env.NODE_ENV || 'development',
-  version: process.env.REACT_APP_VERSION || '1.0.0'
+  environment: 'development',
+  version: '1.0.0'
 });

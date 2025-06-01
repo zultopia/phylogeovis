@@ -4,7 +4,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import dataService from '../../services/dataService';
 
-const PhylogenenticTree = () => {
+const PhylogeneticTree = () => {
   const [treeData, setTreeData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedNode, setSelectedNode] = useState(null);
@@ -23,12 +23,33 @@ const PhylogenenticTree = () => {
       const data = await dataService.getPhylogeneticData();
       setTreeData(data);
       
-      // Draw tree after data loads
+      // Draw tree after data loads - only if we have valid tree data
       setTimeout(() => {
-        drawPhylogeneticTree(data.tree);
+        if (data.tree && data.tree.tree) {
+          drawPhylogeneticTree(data.tree.tree);
+        }
       }, 100);
     } catch (error) {
       console.error('Error loading phylogenetic data:', error);
+      // Set fallback data
+      setTreeData({
+        alignment: { alignedSequences: [], alignmentScore: 0.5, consensusSequence: '' },
+        tree: { 
+          tree: {
+            id: 'root',
+            name: 'Root', 
+            isLeaf: false,
+            children: [],
+            distance: 0
+          },
+          distanceMatrix: [],
+          bootstrapValues: []
+        },
+        species: ['Pongo abelii', 'Pongo pygmaeus', 'Pongo tapanuliensis'],
+        totalSamples: 0,
+        lastUpdated: new Date().toISOString(),
+        error: 'Failed to load phylogenetic data'
+      });
     } finally {
       setLoading(false);
     }
@@ -464,4 +485,4 @@ const PhylogenenticTree = () => {
   );
 };
 
-export default PhylogenenticTree;
+export default PhylogeneticTree;

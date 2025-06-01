@@ -259,19 +259,19 @@ const DiversityAnalysis = () => {
   const filteredSpecies = selectedSpecies === 'all' ? species : [selectedSpecies];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 lg:space-y-6">
       {/* Controls */}
-      <div className="bg-white p-4 rounded-lg shadow">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center space-x-4">
-            <div>
+      <div className="bg-white p-3 lg:p-4 rounded-lg shadow">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
+            <div className="w-full sm:w-auto">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Species Filter
               </label>
               <select
                 value={selectedSpecies}
                 onChange={(e) => setSelectedSpecies(e.target.value)}
-                className="border border-gray-300 rounded-md px-3 py-2 text-sm"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
               >
                 <option value="all">All Species</option>
                 {species.map(s => (
@@ -280,14 +280,14 @@ const DiversityAnalysis = () => {
               </select>
             </div>
             
-            <div>
+            <div className="w-full sm:w-auto">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Diversity Metric
               </label>
               <select
                 value={selectedMetric}
                 onChange={(e) => setSelectedMetric(e.target.value)}
-                className="border border-gray-300 rounded-md px-3 py-2 text-sm"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
               >
                 <option value="shannon">Shannon Index</option>
                 <option value="simpson">Simpson Index</option>
@@ -309,7 +309,7 @@ const DiversityAnalysis = () => {
           
           <button
             onClick={loadDiversityData}
-            className="bg-green-600 text-white px-4 py-2 rounded-md text-sm hover:bg-green-700"
+            className="bg-green-600 text-white px-4 py-2 rounded-md text-sm hover:bg-green-700 transition-colors w-full sm:w-auto"
           >
             Refresh Analysis
           </button>
@@ -320,7 +320,7 @@ const DiversityAnalysis = () => {
       {showComparison && renderComparisonChart()}
 
       {/* Individual Species Analysis */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
         {filteredSpecies.map(speciesName => 
           renderDiversityChart(speciesName, diversityData.bySpecies[speciesName])
         )}
@@ -328,8 +328,8 @@ const DiversityAnalysis = () => {
 
       {/* Nucleotide Composition Analysis */}
       <div>
-        <h2 className="text-xl font-bold text-gray-900 mb-4">Nucleotide Composition Analysis</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <h2 className="text-lg lg:text-xl font-bold text-gray-900 mb-3 lg:mb-4">Nucleotide Composition Analysis</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
           {filteredSpecies.map(speciesName => 
             renderNucleotideFrequencies(
               speciesName, 
@@ -341,8 +341,8 @@ const DiversityAnalysis = () => {
 
       {/* Selection Pressure Analysis */}
       <div>
-        <h2 className="text-xl font-bold text-gray-900 mb-4">Selection Pressure Analysis</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <h2 className="text-lg lg:text-xl font-bold text-gray-900 mb-3 lg:mb-4">Selection Pressure Analysis</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
           {filteredSpecies.map(speciesName => 
             renderSelectionAnalysis(
               speciesName, 
@@ -354,24 +354,24 @@ const DiversityAnalysis = () => {
 
       {/* Recommendations */}
       {diversityData.recommendations && diversityData.recommendations.length > 0 && (
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Conservation Recommendations</h3>
+        <div className="bg-white p-4 lg:p-6 rounded-lg shadow">
+          <h3 className="text-base lg:text-lg font-medium text-gray-900 mb-3 lg:mb-4">Conservation Recommendations</h3>
           <div className="space-y-3">
             {diversityData.recommendations.map((rec, index) => (
               <div 
                 key={index}
-                className={`border-l-4 p-4 rounded ${
+                className={`border-l-4 p-3 lg:p-4 rounded ${
                   rec.priority === 'high' ? 'border-red-500 bg-red-50' :
                   rec.priority === 'medium' ? 'border-yellow-500 bg-yellow-50' :
                   'border-blue-500 bg-blue-50'
                 }`}
               >
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h4 className="font-medium text-gray-900">{rec.action}</h4>
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
+                  <div className="flex-1">
+                    <h4 className="font-medium text-gray-900 text-sm lg:text-base">{rec.action}</h4>
                     <p className="text-sm text-gray-600 mt-1">{rec.reason}</p>
                   </div>
-                  <div className="flex flex-col items-end">
+                  <div className="flex flex-col items-end mt-2 sm:mt-0">
                     <span className={`px-2 py-1 text-xs font-medium rounded ${
                       rec.priority === 'high' ? 'bg-red-100 text-red-800' :
                       rec.priority === 'medium' ? 'bg-yellow-100 text-yellow-800' :
@@ -389,9 +389,9 @@ const DiversityAnalysis = () => {
       )}
 
       {/* Analysis Summary */}
-      <div className="bg-gray-50 p-6 rounded-lg">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Analysis Summary</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="bg-gray-50 p-4 lg:p-6 rounded-lg">
+        <h3 className="text-base lg:text-lg font-medium text-gray-900 mb-3 lg:mb-4">Analysis Summary</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
           <div>
             <h4 className="font-medium text-gray-700 mb-2">Key Findings</h4>
             <ul className="text-sm text-gray-600 space-y-1">
@@ -414,10 +414,10 @@ const DiversityAnalysis = () => {
       </div>
 
       {/* Data Export */}
-      <div className="bg-white p-4 rounded-lg shadow">
-        <div className="flex justify-between items-center">
-          <h4 className="text-md font-medium text-gray-900">Export Analysis Data</h4>
-          <div className="space-x-2">
+      <div className="bg-white p-3 lg:p-4 rounded-lg shadow">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+          <h4 className="text-sm lg:text-base font-medium text-gray-900 mb-2 sm:mb-0">Export Analysis Data</h4>
+          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
             <button 
               onClick={() => {
                 const data = JSON.stringify(diversityData, null, 2);
@@ -429,7 +429,7 @@ const DiversityAnalysis = () => {
                 a.click();
                 URL.revokeObjectURL(url);
               }}
-              className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
+              className="bg-blue-600 text-white px-3 py-2 rounded text-sm hover:bg-blue-700 transition-colors"
             >
               Download JSON
             </button>
@@ -448,7 +448,7 @@ const DiversityAnalysis = () => {
                 a.click();
                 URL.revokeObjectURL(url);
               }}
-              className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700"
+              className="bg-green-600 text-white px-3 py-2 rounded text-sm hover:bg-green-700 transition-colors"
             >
               Download CSV
             </button>

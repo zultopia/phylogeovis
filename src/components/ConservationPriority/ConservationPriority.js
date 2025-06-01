@@ -388,19 +388,19 @@ const ConservationPriority = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 lg:space-y-6">
       {/* Controls */}
-      <div className="bg-white p-4 rounded-lg shadow">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center space-x-4">
-            <div>
+      <div className="bg-white p-3 lg:p-4 rounded-lg shadow">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
+            <div className="w-full sm:w-auto">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 View
               </label>
               <select
                 value={selectedView}
                 onChange={(e) => setSelectedView(e.target.value)}
-                className="border border-gray-300 rounded-md px-3 py-2 text-sm"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
               >
                 <option value="overview">Overview</option>
                 <option value="viability">Population Viability</option>
@@ -410,14 +410,14 @@ const ConservationPriority = () => {
               </select>
             </div>
             
-            <div>
+            <div className="w-full sm:w-auto">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Species Filter
               </label>
               <select
                 value={selectedSpecies}
                 onChange={(e) => setSelectedSpecies(e.target.value)}
-                className="border border-gray-300 rounded-md px-3 py-2 text-sm"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
               >
                 <option value="all">All Species</option>
                 <option value="Pongo abelii">Sumatran Orangutan</option>
@@ -426,14 +426,14 @@ const ConservationPriority = () => {
               </select>
             </div>
             
-            <div>
+            <div className="w-full sm:w-auto">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Time Horizon (years)
               </label>
               <select
                 value={timeHorizon}
                 onChange={(e) => setTimeHorizon(parseInt(e.target.value))}
-                className="border border-gray-300 rounded-md px-3 py-2 text-sm"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
               >
                 <option value={25}>25 years</option>
                 <option value={50}>50 years</option>
@@ -444,7 +444,7 @@ const ConservationPriority = () => {
           
           <button
             onClick={loadConservationData}
-            className="bg-green-600 text-white px-4 py-2 rounded-md text-sm hover:bg-green-700"
+            className="bg-green-600 text-white px-4 py-2 rounded-md text-sm hover:bg-green-700 transition-colors w-full sm:w-auto"
           >
             Refresh Analysis
           </button>
@@ -453,7 +453,7 @@ const ConservationPriority = () => {
 
       {/* Content based on selected view */}
       {selectedView === 'overview' && (
-        <div className="space-y-6">
+        <div className="space-y-4 lg:space-y-6">
           {renderPriorityMap()}
           {renderViabilityAnalysis()}
         </div>
@@ -465,41 +465,41 @@ const ConservationPriority = () => {
       {selectedView === 'corridors' && renderCorridorRecommendations()}
 
       {/* Summary Statistics */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-lg shadow text-center">
-          <div className="text-2xl font-bold text-red-600">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
+        <div className="bg-white p-3 lg:p-4 rounded-lg shadow text-center">
+          <div className="text-xl lg:text-2xl font-bold text-red-600">
             {conservationData.priorityRanking.filter(p => p.priority === 'critical').length}
           </div>
-          <div className="text-sm text-gray-600">Critical Areas</div>
+          <div className="text-xs lg:text-sm text-gray-600">Critical Areas</div>
         </div>
         
-        <div className="bg-white p-4 rounded-lg shadow text-center">
-          <div className="text-2xl font-bold text-orange-600">
+        <div className="bg-white p-3 lg:p-4 rounded-lg shadow text-center">
+          <div className="text-xl lg:text-2xl font-bold text-orange-600">
             {conservationData.conservationActions.filter(a => a.priority === 'critical').length}
           </div>
-          <div className="text-sm text-gray-600">Urgent Actions</div>
+          <div className="text-xs lg:text-sm text-gray-600">Urgent Actions</div>
         </div>
         
-        <div className="bg-white p-4 rounded-lg shadow text-center">
-          <div className="text-2xl font-bold text-blue-600">
+        <div className="bg-white p-3 lg:p-4 rounded-lg shadow text-center">
+          <div className="text-xl lg:text-2xl font-bold text-blue-600">
             {conservationData.spatialAnalysis.corridorRecommendations?.length || 0}
           </div>
-          <div className="text-sm text-gray-600">Corridor Opportunities</div>
+          <div className="text-xs lg:text-sm text-gray-600">Corridor Opportunities</div>
         </div>
         
-        <div className="bg-white p-4 rounded-lg shadow text-center">
-          <div className="text-2xl font-bold text-green-600">
+        <div className="bg-white p-3 lg:p-4 rounded-lg shadow text-center">
+          <div className="text-xl lg:text-2xl font-bold text-green-600">
             {Object.keys(conservationData.viabilityAnalysis).length}
           </div>
-          <div className="text-sm text-gray-600">Species Analyzed</div>
+          <div className="text-xs lg:text-sm text-gray-600">Species Analyzed</div>
         </div>
       </div>
 
       {/* Export Options */}
-      <div className="bg-white p-4 rounded-lg shadow">
-        <div className="flex justify-between items-center">
-          <h4 className="text-md font-medium text-gray-900">Export Conservation Report</h4>
-          <div className="space-x-2">
+      <div className="bg-white p-3 lg:p-4 rounded-lg shadow">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+          <h4 className="text-sm lg:text-base font-medium text-gray-900 mb-2 sm:mb-0">Export Conservation Report</h4>
+          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
             <button 
               onClick={() => {
                 const data = JSON.stringify(conservationData, null, 2);
@@ -511,13 +511,13 @@ const ConservationPriority = () => {
                 a.click();
                 URL.revokeObjectURL(url);
               }}
-              className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
+              className="bg-blue-600 text-white px-3 py-2 rounded text-sm hover:bg-blue-700 transition-colors"
             >
               Download Report
             </button>
             <button 
               onClick={() => window.print()}
-              className="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700"
+              className="bg-gray-600 text-white px-3 py-2 rounded text-sm hover:bg-gray-700 transition-colors"
             >
               Print Summary
             </button>

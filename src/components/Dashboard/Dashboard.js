@@ -3,6 +3,8 @@
 
 import React, { useState, useEffect } from 'react';
 import dataService from '../../services/dataService';
+import IndonesiaMap from '../IndonesiaMap/IndonesiaMap';
+import Logo from '../../assets/images/logo.svg';
 
 const Dashboard = () => {
   const [dashboardData, setDashboardData] = useState(null);
@@ -21,6 +23,22 @@ const Dashboard = () => {
       setDashboardData(data);
     } catch (error) {
       console.error('Error loading dashboard data:', error);
+      // Set fallback data to prevent complete failure
+      setDashboardData({
+        summary: {
+          totalSpecies: 3,
+          totalSamples: 0,
+          totalLocations: 0,
+          criticalLocations: 0
+        },
+        recentUpdates: [],
+        alerts: [{
+          type: 'warning',
+          species: 'System',
+          message: 'Data loading failed, using fallback data',
+          value: 'Please refresh to try again'
+        }]
+      });
     } finally {
       setLoading(false);
     }
@@ -47,16 +65,62 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-600"></div>
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <div className="text-center">
+          <div className="relative">
+            <div className="animate-spin rounded-full h-16 w-16 border-4 border-gray-200 border-t-green-600 mx-auto"></div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <img 
+                src="../../assets/images/logo.svg" 
+                alt="PhyloGeoVis" 
+                className="h-8 w-8"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.nextElementSibling.style.display = 'flex';
+                }}
+              />
+              <div className="h-8 w-8 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg hidden items-center justify-center">
+                <span className="text-white font-bold text-xs">PG</span>
+              </div>
+            </div>
+          </div>
+          <h3 className="mt-4 text-lg font-medium text-gray-900">Loading PhyloGeoVis</h3>
+          <p className="mt-2 text-sm text-gray-600">Analyzing orangutan genomic data...</p>
+          <div className="mt-4 flex justify-center space-x-1">
+            <div className="w-2 h-2 bg-green-600 rounded-full animate-bounce"></div>
+            <div className="w-2 h-2 bg-green-600 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+            <div className="w-2 h-2 bg-green-600 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+          </div>
+        </div>
       </div>
     );
   }
 
   if (!dashboardData) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-red-600">Failed to load dashboard data</div>
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <div className="text-center max-w-md mx-auto px-4">
+          <div className="mb-4">
+            <svg className="mx-auto h-16 w-16 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">Failed to Load Dashboard</h3>
+          <p className="text-gray-600 mb-6">
+            There was an error loading the dashboard data. Please check your connection and try again.
+          </p>
+          <div className="space-y-3">
+            <button 
+              onClick={loadDashboardData}
+              className="w-full bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors"
+            >
+              Retry Loading
+            </button>
+            <p className="text-xs text-gray-500">
+              If the problem persists, please contact support or check the console for more details.
+            </p>
+          </div>
+        </div>
       </div>
     );
   }
@@ -68,7 +132,7 @@ const Dashboard = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center space-x-4">
-              <img src="/src/assets/images/logo.svg" alt="PhyloGeoVis" className="h-10 w-10" />
+              <img src={Logo} alt="PhyloGeoVis" className="h-10 w-10" />
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">PhyloGeoVis</h1>
                 <p className="text-sm text-gray-600">Orangutan Conservation Prioritization</p>
@@ -221,22 +285,22 @@ const Dashboard = () => {
             {/* Alerts Section */}
             {dashboardData.alerts && dashboardData.alerts.length > 0 && (
               <div className="bg-white shadow rounded-lg">
-                <div className="px-4 py-5 sm:p-6">
-                  <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
+                <div className="px-4 py-4 lg:px-6 lg:py-5">
+                  <h3 className="text-base lg:text-lg leading-6 font-medium text-gray-900 mb-3 lg:mb-4">
                     Conservation Alerts
                   </h3>
-                  <div className="space-y-3">
+                  <div className="space-y-2 lg:space-y-3">
                     {dashboardData.alerts.map((alert, index) => (
                       <div
                         key={index}
-                        className={`border-l-4 p-4 rounded ${getAlertColor(alert.type)}`}
+                        className={`border-l-4 p-3 lg:p-4 rounded ${getAlertColor(alert.type)}`}
                       >
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <p className="font-medium">{alert.message}</p>
-                            <p className="text-sm mt-1">{alert.value}</p>
+                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
+                          <div className="flex-1">
+                            <p className="font-medium text-sm lg:text-base">{alert.message}</p>
+                            <p className="text-xs lg:text-sm mt-1">{alert.value}</p>
                           </div>
-                          <span className="text-xs font-medium bg-white bg-opacity-50 px-2 py-1 rounded">
+                          <span className="text-xs font-medium bg-white bg-opacity-50 px-2 py-1 rounded mt-2 sm:mt-0 self-start">
                             {alert.species}
                           </span>
                         </div>
@@ -249,8 +313,8 @@ const Dashboard = () => {
 
             {/* Recent Updates */}
             <div className="bg-white shadow rounded-lg">
-              <div className="px-4 py-5 sm:p-6">
-                <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
+              <div className="px-4 py-4 lg:px-6 lg:py-5">
+                <h3 className="text-base lg:text-lg leading-6 font-medium text-gray-900 mb-3 lg:mb-4">
                   Recent Analysis Updates
                 </h3>
                 <div className="flow-root">
@@ -263,17 +327,17 @@ const Dashboard = () => {
                           )}
                           <div className="relative flex space-x-3">
                             <div>
-                              <span className="h-8 w-8 rounded-full bg-green-500 flex items-center justify-center ring-8 ring-white">
-                                <span className="text-white text-xs font-bold">
+                              <span className="h-6 w-6 lg:h-8 lg:w-8 rounded-full bg-green-500 flex items-center justify-center ring-8 ring-white">
+                                <span className="text-white text-xs lg:text-sm font-bold">
                                   {update.type.charAt(0).toUpperCase()}
                                 </span>
                               </span>
                             </div>
-                            <div className="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                            <div className="min-w-0 flex-1 pt-1.5 flex flex-col sm:flex-row sm:justify-between space-y-1 sm:space-y-0 sm:space-x-4">
                               <div>
-                                <p className="text-sm text-gray-500">{update.description}</p>
+                                <p className="text-sm lg:text-base text-gray-500">{update.description}</p>
                               </div>
-                              <div className="text-right text-sm whitespace-nowrap text-gray-500">
+                              <div className="text-right text-xs lg:text-sm whitespace-nowrap text-gray-500">
                                 {new Date(update.date).toLocaleDateString()}
                               </div>
                             </div>
@@ -286,42 +350,46 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* Quick Actions */}
-            <div className="bg-white shadow rounded-lg">
-              <div className="px-4 py-5 sm:p-6">
-                <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-                  Quick Actions
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Indonesia Map Section */}
+            <div className="bg-white shadow rounded-lg overflow-hidden">
+              <div className="px-4 py-4 lg:px-6 lg:py-5 border-b">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                  <h3 className="text-base lg:text-lg leading-6 font-medium text-gray-900 mb-2 sm:mb-0">
+                    Orangutan Distribution Map
+                  </h3>
                   <button 
-                    onClick={() => setSelectedView('phylogenetic')}
-                    className="p-4 border border-gray-300 rounded-lg hover:bg-gray-50 text-left"
+                    onClick={() => setSelectedView('map')}
+                    className="text-sm text-green-600 hover:text-green-700 font-medium"
                   >
-                    <h4 className="font-medium text-gray-900">View Phylogenetic Tree</h4>
-                    <p className="text-sm text-gray-500 mt-1">
-                      Explore evolutionary relationships between orangutan species
-                    </p>
+                    View Full Map →
                   </button>
-                  
-                  <button 
-                    onClick={() => setSelectedView('diversity')}
-                    className="p-4 border border-gray-300 rounded-lg hover:bg-gray-50 text-left"
-                  >
-                    <h4 className="font-medium text-gray-900">Analyze Genetic Diversity</h4>
-                    <p className="text-sm text-gray-500 mt-1">
-                      Compare diversity indices across populations
-                    </p>
-                  </button>
-                  
-                  <button 
-                    onClick={() => setSelectedView('conservation')}
-                    className="p-4 border border-gray-300 rounded-lg hover:bg-gray-50 text-left"
-                  >
-                    <h4 className="font-medium text-gray-900">Conservation Priorities</h4>
-                    <p className="text-sm text-gray-500 mt-1">
-                      Identify critical areas needing immediate action
-                    </p>
-                  </button>
+                </div>
+              </div>
+              <div className="h-64 sm:h-80 lg:h-96">
+                <IndonesiaMap 
+                  selectedSpecies={selectedSpecies}
+                  showHabitats={true}
+                  showThreats={false}
+                />
+              </div>
+              <div className="px-4 py-3 lg:px-6 lg:py-4 bg-gray-50 border-t">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 text-sm">
+                  <div className="text-center">
+                    <div className="text-lg lg:text-xl font-bold text-green-600">104K</div>
+                    <div className="text-xs lg:text-sm text-gray-600">Total Population</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-lg lg:text-xl font-bold text-blue-600">6</div>
+                    <div className="text-xs lg:text-sm text-gray-600">Protected Areas</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-lg lg:text-xl font-bold text-purple-600">72%</div>
+                    <div className="text-xs lg:text-sm text-gray-600">Forest Cover</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-lg lg:text-xl font-bold text-red-600">Critical</div>
+                    <div className="text-xs lg:text-sm text-gray-600">Status</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -329,33 +397,33 @@ const Dashboard = () => {
         )}
 
         {selectedView === 'phylogenetic' && (
-          <div className="bg-white shadow rounded-lg p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Phylogenetic Analysis</h2>
-            <div className="bg-gray-100 rounded-lg p-8 text-center">
+          <div className="bg-white shadow rounded-lg p-4 lg:p-6">
+            <h2 className="text-lg lg:text-xl font-bold text-gray-900 mb-3 lg:mb-4">Phylogenetic Analysis</h2>
+            <div className="bg-gray-100 rounded-lg p-4 lg:p-8 text-center">
               <div className="text-gray-600 mb-4">
-                <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="mx-auto h-12 w-12 lg:h-16 lg:w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
                     d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </div>
-              <p className="text-lg font-medium text-gray-900 mb-2">Phylogenetic Tree Visualization</p>
-              <p className="text-gray-600 mb-4">
+              <p className="text-base lg:text-lg font-medium text-gray-900 mb-2">Phylogenetic Tree Visualization</p>
+              <p className="text-sm lg:text-base text-gray-600 mb-4">
                 Interactive phylogenetic tree showing evolutionary relationships between orangutan species
               </p>
-              <div className="bg-yellow-100 border border-yellow-400 rounded-md p-4 text-yellow-800 text-sm">
+              <div className="bg-yellow-100 border border-yellow-400 rounded-md p-3 lg:p-4 text-yellow-800 text-xs lg:text-sm">
                 <p><strong>Note:</strong> Detailed phylogenetic tree component would be implemented here</p>
-                <p>Features: Interactive tree, bootstrap values, branch lengths, species grouping</p>
+                <p className="mt-1">Features: Interactive tree, bootstrap values, branch lengths, species grouping</p>
               </div>
             </div>
           </div>
         )}
 
         {selectedView === 'diversity' && (
-          <div className="bg-white shadow rounded-lg p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Genetic Diversity Analysis</h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="bg-gray-100 rounded-lg p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-3">Shannon Diversity Index</h3>
+          <div className="bg-white shadow rounded-lg p-4 lg:p-6">
+            <h2 className="text-lg lg:text-xl font-bold text-gray-900 mb-3 lg:mb-4">Genetic Diversity Analysis</h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+              <div className="bg-gray-100 rounded-lg p-4 lg:p-6">
+                <h3 className="text-base lg:text-lg font-medium text-gray-900 mb-3">Shannon Diversity Index</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-gray-600">Pongo abelii</span>
@@ -370,10 +438,10 @@ const Dashboard = () => {
                 </div>
               </div>
               
-              <div className="bg-gray-100 rounded-lg p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-3">Selection Pressure Analysis</h3>
-                <div className="text-center py-8">
-                  <div className="text-3xl font-bold text-gray-400 mb-2">dN/dS</div>
+              <div className="bg-gray-100 rounded-lg p-4 lg:p-6">
+                <h3 className="text-base lg:text-lg font-medium text-gray-900 mb-3">Selection Pressure Analysis</h3>
+                <div className="text-center py-6 lg:py-8">
+                  <div className="text-2xl lg:text-3xl font-bold text-gray-400 mb-2">dN/dS</div>
                   <p className="text-gray-600 text-sm">
                     Ratio analysis to identify genomic regions under selection
                   </p>
@@ -384,26 +452,26 @@ const Dashboard = () => {
         )}
 
         {selectedView === 'conservation' && (
-          <div className="space-y-6">
-            <div className="bg-white shadow rounded-lg p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Conservation Priority Areas</h2>
+          <div className="space-y-4 lg:space-y-6">
+            <div className="bg-white shadow rounded-lg p-4 lg:p-6">
+              <h2 className="text-lg lg:text-xl font-bold text-gray-900 mb-3 lg:mb-4">Conservation Priority Areas</h2>
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-3 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Location
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-3 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Species
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-3 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Priority
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-3 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Population
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-3 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Threat Level
                       </th>
                     </tr>
@@ -411,13 +479,13 @@ const Dashboard = () => {
                   <tbody className="bg-white divide-y divide-gray-200">
                     {dataService.getGeographicData().map((location, index) => (
                       <tr key={index}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        <td className="px-3 lg:px-6 py-4 whitespace-nowrap text-xs lg:text-sm font-medium text-gray-900">
                           {location.location}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="px-3 lg:px-6 py-4 whitespace-nowrap text-xs lg:text-sm text-gray-500">
                           {location.species.join(', ')}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-3 lg:px-6 py-4 whitespace-nowrap">
                           <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
                             location.populationSize < 50 ? getPriorityColor('critical') :
                             location.populationSize < 100 ? getPriorityColor('high') :
@@ -427,10 +495,10 @@ const Dashboard = () => {
                              location.populationSize < 100 ? 'High' : 'Medium'}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="px-3 lg:px-6 py-4 whitespace-nowrap text-xs lg:text-sm text-gray-500">
                           {location.populationSize}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-3 lg:px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
                             <div className="w-full bg-gray-200 rounded-full h-2 mr-2">
                               <div 
@@ -456,27 +524,60 @@ const Dashboard = () => {
         )}
 
         {selectedView === 'map' && (
-          <div className="bg-white shadow rounded-lg p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Geographic Distribution</h2>
-            <div className="bg-gray-100 rounded-lg p-8 text-center min-h-96">
-              <div className="text-gray-600 mb-4">
-                <svg className="mx-auto h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                    d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-                </svg>
+          <div className="bg-white shadow rounded-lg overflow-hidden">
+            <div className="p-4 lg:p-6 border-b">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <h2 className="text-xl font-bold text-gray-900 mb-2 sm:mb-0">Geographic Distribution</h2>
+                <div className="flex flex-wrap items-center space-x-2 space-y-2 sm:space-y-0">
+                  <select 
+                    value={selectedSpecies}
+                    onChange={(e) => setSelectedSpecies(e.target.value)}
+                    className="border border-gray-300 rounded-md px-3 py-2 text-sm"
+                  >
+                    <option value="all">All Species</option>
+                    <option value="Pongo abelii">Sumatran Orangutan</option>
+                    <option value="Pongo pygmaeus">Bornean Orangutan</option>
+                    <option value="Pongo tapanuliensis">Tapanuli Orangutan</option>
+                  </select>
+                  <button className="bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700 transition-colors">
+                    Export Map
+                  </button>
+                </div>
               </div>
-              <p className="text-lg font-medium text-gray-900 mb-2">Interactive Map</p>
-              <p className="text-gray-600 mb-4">
-                Geographic distribution of orangutan populations with genetic diversity overlay
-              </p>
-              <div className="bg-green-100 border border-green-400 rounded-md p-4 text-green-800 text-sm">
-                <p><strong>Map Features:</strong></p>
-                <ul className="text-left mt-2 space-y-1">
-                  <li>• Population locations with size indicators</li>
-                  <li>• Genetic diversity heat map overlay</li>
-                  <li>• Habitat corridors and connectivity analysis</li>
-                  <li>• Conservation priority zones</li>
-                  <li>• Threat assessment layers</li>
+            </div>
+            <div className="h-96 sm:h-[500px] lg:h-[600px]">
+              <IndonesiaMap 
+                selectedSpecies={selectedSpecies}
+                showHabitats={true}
+                showThreats={false}
+              />
+            </div>
+            <div className="p-4 lg:p-6 bg-gray-50 border-t">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+                <div className="bg-white p-3 rounded-lg">
+                  <div className="font-medium text-gray-700">Total Habitat Area</div>
+                  <div className="text-xl font-bold text-green-600">2.4M hectares</div>
+                </div>
+                <div className="bg-white p-3 rounded-lg">
+                  <div className="font-medium text-gray-700">Protected Areas</div>
+                  <div className="text-xl font-bold text-blue-600">6 major sites</div>
+                </div>
+                <div className="bg-white p-3 rounded-lg">
+                  <div className="font-medium text-gray-700">Connectivity Index</div>
+                  <div className="text-xl font-bold text-purple-600">0.52</div>
+                </div>
+                <div className="bg-white p-3 rounded-lg">
+                  <div className="font-medium text-gray-700">Forest Cover</div>
+                  <div className="text-xl font-bold text-orange-600">72%</div>
+                </div>
+              </div>
+              <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+                <h4 className="font-medium text-blue-900 mb-2">Conservation Insights</h4>
+                <ul className="text-sm text-blue-800 space-y-1">
+                  <li>• Tapanuli orangutans have the smallest population with highest extinction risk</li>
+                  <li>• Habitat fragmentation is the primary threat across all regions</li>
+                  <li>• Corridor restoration between Leuser and Batang Toru is critical priority</li>
+                  <li>• Kinabatangan population shows signs of stabilization due to conservation efforts</li>
                 </ul>
               </div>
             </div>
