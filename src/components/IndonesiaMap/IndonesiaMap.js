@@ -562,13 +562,13 @@ const IndonesiaMap = ({ selectedSpecies = 'all', showHabitats = true, showThreat
         <div className="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
           <button
             onClick={() => mapRef.current?.setZoom(mapRef.current.getZoom() + 1)}
-            className="block w-10 h-10 bg-white hover:bg-gray-100 border-b border-gray-200 flex items-center justify-center text-gray-700 font-bold text-lg transition-colors"
+            className="block w-10 h-10 bg-white hover:bg-gray-100 border-b border-gray-200 items-center justify-center text-gray-700 font-bold text-lg transition-colors"
           >
             +
           </button>
           <button
             onClick={() => mapRef.current?.setZoom(mapRef.current.getZoom() - 1)}
-            className="block w-10 h-10 bg-white hover:bg-gray-100 flex items-center justify-center text-gray-700 font-bold text-lg transition-colors"
+            className="block w-10 h-10 bg-white hover:bg-gray-100 items-center justify-center text-gray-700 font-bold text-lg transition-colors"
           >
             −
           </button>
