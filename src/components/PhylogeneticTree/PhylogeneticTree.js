@@ -562,14 +562,6 @@ const PhylogeneticTree = () => {
                 />
                 <span className="text-sm">Branch lengths</span>
               </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={showDiversityMetrics}
-                  onChange={(e) => setShowDiversityMetrics(e.target.checked)}
-                />
-                <span className="text-sm">Diversity metrics</span>
-              </label>
             </div>
 
             <div className="flex gap-2">
@@ -643,14 +635,6 @@ const PhylogeneticTree = () => {
                 onChange={(e) => setShowBranchLength(e.target.checked)}
               />
               <span className="text-sm">Branch lengths</span>
-            </label>
-            <label className="flex items-center gap-1">
-              <input
-                type="checkbox"
-                checked={showDiversityMetrics}
-                onChange={(e) => setShowDiversityMetrics(e.target.checked)}
-              />
-              <span className="text-sm">Diversity metrics</span>
             </label>
           </div>
 
