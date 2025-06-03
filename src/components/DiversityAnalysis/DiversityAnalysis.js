@@ -1306,7 +1306,7 @@ const DiversityAnalysis = () => {
                           <div>
                             <strong style={{ color: "#dc2626" }}>{species.species}</strong>: Critical genetic bottleneck
                             detected.
-                            <br />• Low diversity (Shannon: {species.metrics.shannonIndex.toFixed(4)})
+                            <br />• Low diversity (Nucleotide Diversity: {species.metrics.nucleotideDiversity.toFixed(4)})
                             <br />• Extinction risk: {viability ? Math.round(viability.extinctionRisk) : "High"}%
                             <br />• Selection pressure: {selection?.selectionType || "Unknown"}
                             <br />
@@ -1347,8 +1347,8 @@ const DiversityAnalysis = () => {
                       >
                         <h4 style={{ fontWeight: "600", color: "#16a34a", margin: "0 0 4px 0" }}>{species.species}</h4>
                         <p style={{ fontSize: "14px", color: "#15803d", margin: 0 }}>
-                          Stable population with healthy genetic diversity (Shannon:{" "}
-                          {species.metrics.shannonIndex.toFixed(4)}).
+                          Stable population with healthy genetic diversity (Nucleotide Diversity:{" "}
+                          {species.metrics.nucleotideDiversity.toFixed(4)}).
                           <br />
                           Viability score: {viability ? Math.round(viability.viabilityScore) : "Good"}% |
                           {species.metrics.polymorphicSites} polymorphic sites detected.
