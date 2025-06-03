@@ -1,12 +1,8 @@
-// src/index.js
-// Main entry point for PhyloGeoVis application
-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './styles/index.css';
 
-// Error boundary component
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -23,7 +19,6 @@ class ErrorBoundary extends React.Component {
       errorInfo: errorInfo
     });
     
-    // Log error to console for debugging
     console.error('PhyloGeoVis Error:', error, errorInfo);
   }
 
@@ -82,7 +77,6 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-// Initialize React application
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
@@ -93,7 +87,6 @@ root.render(
   </React.StrictMode>
 );
 
-// Register service worker for offline functionality (optional)
 if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/service-worker.js')
@@ -106,7 +99,6 @@ if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
   });
 }
 
-// Log application initialization
 console.log('PhyloGeoVis application initialized successfully');
 console.log('Build info:', {
   timestamp: new Date().toISOString(),

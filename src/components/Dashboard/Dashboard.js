@@ -1,7 +1,7 @@
-// src/components/Dashboard/Dashboard.js
-// Main dashboard component for PhyloGeoVis
+'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useState, useEffect } from 'react';
 import dataService from '../../services/dataService';
 import IndonesiaMap from '../IndonesiaMap/IndonesiaMap';
 import Logo from '../../assets/images/logo.svg';
@@ -23,7 +23,6 @@ const Dashboard = () => {
       setDashboardData(data);
     } catch (error) {
       console.error('Error loading dashboard data:', error);
-      // Set fallback data to prevent complete failure
       setDashboardData({
         summary: {
           totalSpecies: 3,
