@@ -41,7 +41,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {sidebarOpen && (
-        <div className="fixed inset-0 z-40" onClick={() => setSidebarOpen(false)}>
+        <div className="fixed inset-0 z-1000" onClick={() => setSidebarOpen(false)}>
           <div className="fixed inset-0 bg-gray-600 bg-opacity-75"></div>
         </div>
       )}
@@ -95,7 +95,7 @@ function App() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col lg:pl-0">
         {/* Top bar - Mobile only */}
-        <div className="sticky top-0 z-30 bg-white shadow-sm border-b">
+        <div className="sticky top-0 z-200 bg-white shadow-sm border-b">
           <div className="px-4 sm:px-6">
             <div className="flex justify-between items-center h-16">
               <div className="flex items-center">

@@ -496,7 +496,10 @@ const DiversityAnalysis = () => {
             🧬 Genetic Diversity & Selection Analysis
           </h1>
           <p style={{ color: "#6b7280", margin: 0 }}>
-            Comprehensive genetic diversity, selection pressure, and population viability analysis
+            Comprehensive genetic diversity, selection pressure, and population viability analysis.
+          </p>
+          <p style={{ color: "#6b7280", margin: 0 }}>
+            *Based on NCBI Genomic, not real-time data.
           </p>
         </div>
       </div>
@@ -1113,7 +1116,13 @@ const DiversityAnalysis = () => {
               <ResponsiveContainer width="100%" height={400}>
                 <LineChart>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="year" />
+                  <XAxis
+                    dataKey="year"
+                    type="number"
+                    domain={[0, 50]}
+                    tick={[0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]}
+                  />
+
                   <YAxis />
                   <Tooltip />
                   <Legend />

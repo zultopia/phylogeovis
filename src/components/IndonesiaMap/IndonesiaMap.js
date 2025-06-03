@@ -213,7 +213,7 @@ const IndonesiaMap = ({ selectedSpecies = 'all', showHabitats = true, showThreat
   return (
     <div className="w-full h-full relative bg-gray-100 rounded-lg overflow-hidden">
       {/* Top Control Bar */}
-      <div className="absolute top-4 left-4 right-4 z-[1000] flex justify-between items-start gap-4">
+      <div className="absolute top-4 left-4 right-4 z-[100] flex justify-between items-start gap-4">
         {/* Left Side - Species Filter & Statistics Toggle */}
         <div className="flex flex-col gap-2">
           {/* Species Filter */}
@@ -469,7 +469,7 @@ const IndonesiaMap = ({ selectedSpecies = 'all', showHabitats = true, showThreat
 
       {/* Detailed Info Panel - Bottom */}
       {selectedLocation && (
-        <div className="absolute bottom-4 left-4 right-4 z-[1000]">
+        <div className="absolute bottom-4 left-4 right-4 z-[100]">
           <div className="bg-white rounded-lg shadow-2xl border border-gray-200 max-h-80 overflow-hidden">
             {/* Header */}
             <div className="bg-gradient-to-r from-green-50 to-blue-50 p-4 border-b">
@@ -558,7 +558,7 @@ const IndonesiaMap = ({ selectedSpecies = 'all', showHabitats = true, showThreat
       )}
 
       {/* Zoom Controls */}
-      <div className="absolute right-4 top-1/2 transform -translate-y-1/2 z-[1000]">
+      <div className="absolute right-4 top-1/2 transform -translate-y-1/2 z-[100]">
         <div className="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
           <button
             onClick={() => mapRef.current?.setZoom(mapRef.current.getZoom() + 1)}
@@ -576,7 +576,7 @@ const IndonesiaMap = ({ selectedSpecies = 'all', showHabitats = true, showThreat
       </div>
 
       {/* Instructions */}
-      <div className="absolute bottom-4 right-4 z-[1000] bg-white/90 backdrop-blur-sm rounded-lg p-2 shadow-lg text-xs text-gray-600 max-w-40">
+      <div className="absolute bottom-4 right-4 z-[100] bg-white/90 backdrop-blur-sm rounded-lg p-2 shadow-lg text-xs text-gray-600 max-w-40">
         <div className="text-center">
           <div className="font-medium mb-1">Navigation</div>
           <div>Click markers for details</div>
