@@ -236,7 +236,7 @@ const IndividualPointMap = ({
   }
 
   return (
-    <div className="relative h-96 lg:h-[500px] bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+    <div className="relative h-96 lg:h-[500px] bg-gray-100 rounded-lg overflow-hidden border border-gray-200 z-10">
       <MapContainer
         center={[-0.7893, 113.9213]}
         zoom={5}
